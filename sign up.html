@@ -84,47 +84,81 @@
     <div class="login__form signup__form ">
     <h2>Register Here</h2>
     <p>Already have an account?<a href="login.html">Log In</a></p>
-    <form action="">
+    <form id="signUpForm">
       <div class="row">
-        <div class="col-lg-6">
-          <input type="text" name="text" placeholder="First Name" id="firstNameUp" >
-        </div>
-        <div class="col-lg-6">
-            <input type="text" name="lastName" placeholder="Last Name" id="lastNameUp" >
-          </div>
-
           <div class="col-lg-6">
-            <input type="text" name="phoneNumber" placeholder="Phone Number" id="phoneNumberUP" >
+              <input type="text" name="firstName" placeholder="First Name" id="firstNameUp" required>
           </div>
-    
-        <div class="col-lg-6">
-          <input type="email" name="email" placeholder="Your Email" id="emailUP" >
-        </div>
-        <div class="col-lg-6">
-          <input type="password" name="password--singup" placeholder="Password" id="passwordSingup" >
-        </div>
-        <!-- <div class="col-lg-6">
-          <input type="password" name="password--singup" placeholder="Confirm Password" id="passwordUpConform" >
-        </div> -->
-    
-        <div class="col-sm-12 ">
-            <input type="checkbox" name="checkbox" id="checkbox" >
-          <p>
-   
-            Yes, I agree with all <a href="#">Terms & Conditions</a>
-          </p>
-        </div>
-    
-        <div class="col-sm-12 text-center">
-        <button class="btn1" id="signUP" >Sign Up</button>
-        </div>
-      </div> <!-- row -->
-    
-     
-    
-    
-    </form>
-    </div> <!-- login__form -->
+          <div class="col-lg-6">
+              <input type="text" name="lastName" placeholder="Last Name" id="lastNameUp" required>
+          </div>
+          <div class="col-lg-6">
+              <input type="text" name="phoneNumber" placeholder="Phone Number" id="phoneNumberUp" required>
+          </div>
+          <div class="col-lg-6">
+              <input type="email" name="email" placeholder="Your Email" id="emailUp" required>
+          </div>
+          <div class="col-lg-6">
+              <input type="password" name="password" placeholder="Password" id="passwordUp" required>
+          </div>
+          <div class="col-sm-12">
+              <input type="checkbox" name="checkbox" id="checkbox" required>
+              <p>Yes, I agree with all <a href="#">Terms & Conditions</a></p>
+          </div>
+          <div class="col-sm-12 text-center">
+              <button type="submit" class="btn1" id="signUp">Sign Up</button>
+          </div>
+      </div>
+  </form>
+
+  <script>
+      document.getElementById('signUpForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const firstName = document.getElementById('firstNameUp').value;
+          const lastName = document.getElementById('lastNameUp').value;
+          const phoneNumber = document.getElementById('phoneNumberUp').value;
+          const email = document.getElementById('emailUp').value;
+          const password = document.getElementById('passwordUp').value;
+          const agreed = document.getElementById('checkbox').checked;
+
+          if (!agreed) {
+              alert("You must agree to the terms and conditions.");
+              return;
+          }
+
+          const fullName = `${firstName} ${lastName}`;
+
+          const formdata = new FormData();
+          formdata.append("name", fullName);
+          formdata.append("email", email);
+          formdata.append("password", password);
+
+          const requestOptions = {
+              method: "POST",
+              body: formdata,
+              redirect: "follow"
+          };
+
+          fetch("https://apis-amirican-university.quickly-egypt.com/public/api/auth/register", requestOptions)
+              .then(response => response.json())
+              .then(result => {
+                  if (result.data) {
+                      console.log("Registration successful:", result);
+                      alert("User created successfully.");
+                      // يمكنك إضافة المزيد من الإجراءات هنا، مثل إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
+                  } else {
+                      console.error("Registration failed:", result);
+                      alert("Registration failed: " + result.message);
+                  }
+              })
+              .catch(error => {
+                  console.error("Error:", error);
+                  alert("An error occurred. Please try again.");
+              });
+      });
+  </script>
+  </div> <!-- login__form -->
             </div>
     
     

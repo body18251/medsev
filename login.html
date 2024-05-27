@@ -84,31 +84,58 @@
 <div class="login__form ">
 <h2>Login Here</h2>
 <p>Didn't you account yet?<a href="sign up.html">Register Here</a></p>
-<form action="">
+<form id="loginForm">
   <div class="row d-flex justify-content-center">
- 
-
-    <div class="col-sm-9">
-      <input type="email" name="email" placeholder="Your Email" id="emailLogin" >
-    </div>
-    <div class="col-sm-9">
-      <input type="password" name="password" placeholder="Password" id="passwordLogin" >
-    </div>
-    
-
-    <div class="col-sm-9">
-      <p><a href="forget password.html">Forgot Password?</a></p>
-    </div>
-
-    <div class="col-sm-9 text-center">
-<button class="btn1" id="btnLogin">Login</button>
-    </div>
-  </div> <!-- row -->
-
- 
-
-
+      <div class="col-sm-9">
+          <input type="email" name="email" placeholder="Your Email" id="emailLogin" required>
+      </div>
+      <div class="col-sm-9">
+          <input type="password" name="password" placeholder="Password" id="passwordLogin" required>
+      </div>
+      <div class="col-sm-9">
+          <p><a href="forget password.html">Forgot Password?</a></p>
+      </div>
+      <div class="col-sm-9 text-center">
+          <button type="submit" class="btn1" id="btnLogin">Login</button>
+      </div>
+  </div>
 </form>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('emailLogin').value;
+      const password = document.getElementById('passwordLogin').value;
+
+      const formdata = new FormData();
+      formdata.append("email", email);
+      formdata.append("password", password);
+
+      const requestOptions = {
+          method: "POST",
+          body: formdata,
+          redirect: "follow"
+      };
+
+      fetch("https://apis-amirican-university.quickly-egypt.com/public/api/auth/login", requestOptions)
+          .then(response => response.json())
+          .then(result => {
+              if (result.data) {
+                  console.log("Login successful:", result);
+                  alert("Login successful! Welcome back 😊");
+                  // يمكنك إضافة المزيد من الإجراءات هنا، مثل إعادة توجيه المستخدم إلى صفحة أخرى
+              } else {
+                  console.error("Login failed:", result);
+                  alert("Login failed: The Email or Password is incorrect.");
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              alert("An error occurred. Please try again.");
+          });
+  });
+</script>
 </div> <!-- login__form -->
         </div>
 
